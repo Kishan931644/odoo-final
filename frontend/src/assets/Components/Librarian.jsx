@@ -19,7 +19,7 @@ const data = [
     }
 ];
 
-export default function User() {
+export default function Librarian() {
     const columns = useMemo(
         () => [
             {
@@ -50,6 +50,9 @@ export default function User() {
     return (
         <>
             <AdminHeader/>
+                <div className="btn-container">
+                <button>Add +</button>
+                </div>
             <div className="user-container">
                 <MaterialReactTable table={table}/>
             </div>

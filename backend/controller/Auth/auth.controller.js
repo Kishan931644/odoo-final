@@ -15,7 +15,7 @@ dbConnect();
 const register = asyncHandler(async (req, res) => {
     const { name, address, city, country, phone, password, email } = req.body;
 
-    const user = { name, address, city, country, phone, password, email,role: "user" };
+    const user = { name, address, city, country, phone, password, email, role: "user" };
 
     let result = await createUser(user);
     if (result.status === "error") {
@@ -64,7 +64,7 @@ const login = asyncHandler(async (req, res) => {
         console.log(user);
 
         const token = generateJWTToken(user);
-        return res.json({ status: "success", data: { message: 'Login successful', isAdmin: isAdmin, token: token }, hasData: true });
+        return res.json({ status: "success", data: { message: 'Login successful', role: user.role, isAdmin: isAdmin, token: token }, hasData: true });
 
     } catch (error) {
         console.error('Login error:', error);
@@ -151,10 +151,10 @@ const createUser = async ({ name, address, city, country, phone, role, password,
 }
 
 
-export { 
-    register, 
-    login, 
-    logout, 
+export {
+    register,
+    login,
+    logout,
     tokenValidate,
     changePassword,
     deleteAccount,

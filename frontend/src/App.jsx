@@ -5,24 +5,34 @@ import Index from "./assets/Components/Index.jsx";
 import Login from "./assets/Components/Login.jsx";
 import Registration from "./assets/Components/Registration.jsx";
 import User from "./assets/Components/User.jsx";
+import Dashboard from "./assets/Components/Dashboard.jsx";
+import Librarian from "./assets/Components/Librarian.jsx";
+import {GoogleOAuthProvider} from '@react-oauth/google';
+import LoginWithGoogle from "./assets/Components/LoginWithGoogle.jsx";
 
 function App() {
-    useEffect(() => {
-        fetch('http://localhost:3000/')
-            .then(response => response.json())
-            .then(data => console.log(data))
-    }, []);
+    // useEffect(() => {
+    //     fetch('http://localhost:3000/')
+    //         .then(response => response.json())
+    //         .then(data => console.log(data))
+    // }, []);
 
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Index/>}/>
-                <Route path="/index" element={<Index/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/registration" element={<Registration/>}/>
-                <Route path="/user" element={<User/>}/>
-            </Routes>
-        </BrowserRouter>
+        <GoogleOAuthProvider clientId="930610643872-pmnitdai2d6kenn2f4akrif6glr051mo.apps.googleusercontent.com">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<LoginWithGoogle/>}/>
+                    <Route path="/index" element={<Index/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/registration" element={<Registration/>}/>
+                    <Route path="/user" element={<User/>}/>
+                    <Route path="/admin/dashboard" element={<Dashboard/>}/>
+                    <Route path="/admin/user" element={<User/>}/>
+                    <Route path="/admin/librarian" element={<Librarian/>}/>
+                    <Route path="/loging" element={<LoginWithGoogle/>}/>
+                </Routes>
+            </BrowserRouter>
+        </GoogleOAuthProvider>
     )
 
 
