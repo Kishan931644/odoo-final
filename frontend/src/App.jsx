@@ -18,7 +18,7 @@ function App() {
     // }, []);
 
     return (
-        <GoogleOAuthProvider clientId="930610643872-pmnitdai2d6kenn2f4akrif6glr051mo.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="27845722517-td15see51ltocmv30uq0a7gdmq1ujdd3.apps.googleusercontent.com">
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<LoginWithGoogle/>}/>

@@ -31,8 +31,8 @@ export default function Login() {
             let data = await response.json();
 
             if (data.status == "success") {
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("role", data.role);
+                localStorage.setItem("token", data.data.token);
+                localStorage.setItem("role", data.data.role);
                 navigate("/admin/dashboard");
             } else {
                 console.log(data)
