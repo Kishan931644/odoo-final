@@ -4,7 +4,7 @@ import dbConnect from '../../models/dbconnect.js';
 
 import Book from '../../models/book/book.model.js';
 import User from '../../models/user/user.model.js'
-import BorrowBook from '../../models/book/borrow.model.js';
+import BorrowingRecord from '../../models/book/borrow.model.js';
 
 dotenv.config();
 dbConnect();
@@ -31,7 +31,7 @@ const borrowBook = asyncHandler(async (req, res) => {
     dueDate.setDate(borrowDate.getDate() + 14);
   
     // Create a borrow record
-    const borrowRecord = await BorrowBook.create({
+    const borrowRecord = await BorrowingRecord.create({
       user: user._id,
       book: book._id,
       borrowDate: borrowDate,
@@ -46,6 +46,47 @@ const borrowBook = asyncHandler(async (req, res) => {
     res.status(200).json({ status: "success", data: { message: "Book borrowed successfully", borrowRecord }, hasData: true });
   });
 
+// return book
+const returnBook = asyncHandler(async (req, res) => {
+  const ISBN = req.params.ISBN;
+  const user = await User.findOne({ email: req.user.email });
+  const book = await Book.findOne({ ISBN: ISBN });
+
+  if (!user) {
+    return res.status(404).json({ status: "error", data: { message: "No user found" }, hasData: false });
+  }
+  if (!book) {
+    return res.status(404).json({ status: "error", data: { message: "No book found" }, hasData: false });
+  }
+
+  const borrowRecord = await BorrowingRecord.findOne({ user: user._id, book: book._id});
+
+  if (!borrowRecord) {
+    return res.status(400).json({ status: "error", data: { message: "This book was not borrowed by the user or has already been returned" }, hasData: false });
+  }
+
+  // Calculate late fees
+  const currentDate = new Date();
+  const dueDate = new Date(borrowRecord.dueDate);
+  let lateFee = 0;
+
+  if (currentDate > dueDate) {
+    const daysLate = Math.ceil((currentDate - dueDate) / (1000 * 60 * 60 * 24));
+    lateFee = daysLate * 2;
+  }
+
+  // Mark borrow record as returned
+  borrowRecord.returned = true;
+  borrowRecord.returnedDate = currentDate;
+  borrowRecord.lateFee = lateFee;
+  await borrowRecord.save();
+
+  // Update book quantity
+  book.quantity += 1;
+  await book.save();
+
+  res.status(200).json({ status: "success", data: { message: "Book returned successfully", borrowRecord, lateFee }, hasData: true });
+});
 
 // create book
 const createBook = (async (data) => {
@@ -149,4 +190,4 @@ const searchBook = asyncHandler(async (req, res) => {
     return res.status(200).json({ status: "success", data: { message: "Books found", books }, hasData: true });
 });
 
-export { createBook, updateBook, deleteBook, getAllBooks, searchBook , borrowBook};
+export { createBook, updateBook, deleteBook, getAllBooks, searchBook , borrowBook, returnBook};
