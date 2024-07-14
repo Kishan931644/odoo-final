@@ -10,7 +10,7 @@ const book = Router();
 book.get("/get-all-books", getAllBooks);
 book.get("/search-book", searchBook);
 book.get("/getrecommodadedbooks", validateUser, getUserHistoryRecommendations);
-book.get("/getpopularbooks", validateUser, getPopuplarBooks);
+book.get("/getpopularbooks", getPopuplarBooks);
 book.get("/get-all-users", validateUser, async(req,res)=>{
     let users = await User.find({role: "user"},{password: 0});
     if(!users){
