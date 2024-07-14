@@ -36,7 +36,7 @@ export default function AddBook({changeView}) {
             });
 
             let data = await response.json();
-            if (data.status != "success") {
+            if (data.status !== "success") {
                 alert("Something went wrong!");
             }
             changeView();
