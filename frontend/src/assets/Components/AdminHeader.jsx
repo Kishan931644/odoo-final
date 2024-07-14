@@ -10,7 +10,7 @@ export default function AdminHeader() {
               <button> <Link to={"/admin/dashboard"} >Dashboard</Link></button>
                 <button><Link to={"/admin/user"} >User</Link></button>
                 <button><Link to={"/admin/librarian"} >Librarian</Link></button>
-                <button><Link to={"/admin/book"} >Books</Link></button>
+                <button><Link to={"/librarian/book"} >Books</Link></button>
                 <button><Link to={"/logout"} >Logout</Link></button>
             </div>
         </header>
