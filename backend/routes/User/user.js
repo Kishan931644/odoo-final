@@ -7,7 +7,7 @@ const user = Router();
 
 
 user.post("/getowndetails", validateUser , getDetail);
-
+user.post("/")
 
 
 

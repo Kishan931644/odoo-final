@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import dbConnect from '../../models/dbconnect.js';
 
 import Book from '../../models/book/book.model.js';
+import BorrowingRecord from '../../models/book/borrow.model.js';
 
 dotenv.config();
 dbConnect();
@@ -62,19 +63,21 @@ const deleteBook = (async (isbn) => {
     }
 });
 
-const getAllBooks = asyncHandler(async (req,res)=>{
-    
+// get all books in the system
+const getAllBooks = asyncHandler(async (req, res) => {
+
     const books = await Book.find();
 
-    if(!books){
-        return res.status(200).json({status: "error", data:{message:"No books found"},hasData: false});
+    if (!books) {
+        return res.status(200).json({ status: "error", data: { message: "No books found" }, hasData: false });
     }
 
-    return res.status(200).json({status: "success", data: {message: "Books founded", books}, hasData: true});
+    return res.status(200).json({ status: "success", data: { message: "Books founded", books }, hasData: true });
 
 
 });
 
+// search book by title, author, genre, publisher, ISBN, thumbnailLink, year, quantity, price
 const searchBook = asyncHandler(async (req, res) => {
     const query = req.query.q;
 
@@ -109,4 +112,54 @@ const searchBook = asyncHandler(async (req, res) => {
     return res.status(200).json({ status: "success", data: { message: "Books found", books }, hasData: true });
 });
 
-export { createBook, updateBook, deleteBook, getAllBooks, searchBook };
+// get book by ISBN number
+const getBookByISBN = asyncHandler(async (req, res) => {
+    const isbn = req.params.ISBN;
+
+    const book = await Book.findOne({ ISBN: isbn });
+
+    if (!book) {
+        return res.status(200).json({ status: "error", data: { message: "Book not found" }, hasData: false });
+    }
+
+    return res.status(200).json({ status: "success", data: { message: "Book found", book }, hasData: true });
+});
+
+const getUserHistoryRecommendations = (async (req, res) => {
+    const borrowedBooks = await BorrowingRecord.find({ user: req.user.mainid }).populate('book');
+    console.log(req.user);
+    if (!borrowedBooks.length) {
+        let books = await Book.find().limit(10);
+        return res.status(200).json({ status: "error", data: {message:"no book found for recommandation", books}, hasData: true });
+    }
+
+    // Extract genres and authors from the user's borrowed books
+    const genres = borrowedBooks.map(entry => entry.book.genre);
+    const authors = borrowedBooks.map(entry => entry.book.author);
+    const borrowedBookIds = borrowedBooks.map(entry => entry.book._id);
+
+    // Find books that match the genres and authors, excluding already borrowed books
+    const recommendations = await Book.find({
+        $or: [
+            { genre: { $in: genres } },
+            { author: { $in: authors } }
+        ],
+        _id: { $nin: borrowedBookIds }
+    }).limit(10);
+
+    return recommendations;
+});
+
+const getPopuplarBooks = asyncHandler(async (req,res) => {
+    const popularBooks = await Book.find().sort({ borrowedCount: -1 }).limit(10);
+    
+    if(!popularBooks){
+        return { status: "error", data: { message: "No popular books found" }, hasData: false };
+    }
+
+    return { status: "success", data: { message: "Popular books found", popularBooks }, hasData: true };
+});
+  
+
+
+export { createBook, updateBook, deleteBook, getAllBooks, searchBook, getBookByISBN, getUserHistoryRecommendations, getPopuplarBooks };

@@ -115,7 +115,7 @@ const deleteAccount = asyncHandler(async (req, res) => {
 });
 
 const generateJWTToken = (user) => {
-    const token = jwt.sign({ name: user.name, email: user.email, role: user.role, id: user.userid }, process.env.JWT_SECRET, { expiresIn: '30d' });
+    const token = jwt.sign({ name: user.name, email: user.email, role: user.role, id: user.userid, mainid: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
     return token;
 };
 
