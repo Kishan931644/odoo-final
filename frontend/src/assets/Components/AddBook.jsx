@@ -1,33 +1,34 @@
 import {Link} from "react-router-dom";
 import "../CSS/Pop-up.css";
 import PropTypes from "prop-types";
+import {useState} from "react";
 
 export default function AddBook({changeView}) {
-    const addLibrarian = async () => {
+    const [ISBN, setISBN] = useState("");
+    const addBookDetails = async () => {
         try {
-            const uname = document.getElementById("uname").value;
-            const uemail = document.getElementById("uemail").value;
-            const city = document.getElementById("city").value;
-            const address = document.getElementById("address").value;
-            const country = document.getElementById("country").value;
-            const phone = document.getElementById("phone").value;
-            const password = document.getElementById("password").value;
+            let book_data = await fetchData();
 
             let headersList = {
                 "Accept": "*/*",
                 "Authorization": localStorage.getItem("token"),
                 "Content-Type": "application/json"
             }
+            console.log(book_data);
 
             let bodyContent = JSON.stringify({
-                "name": uname,
-                "email": uemail,
-                "city": city,
-                "address": address,
-                "country": country,
-                "phone": phone,
-                "password": password
+                "title": book_data.items[0].searchInfo,
+                "desc":book_data.items[0].searchInfo.description,
+                "genre": book_data.items[0].searchInfo.categories,
+                "publisher":"",
+                "year":book_data.items[0].searchInfo.publ,
+                "isbn": ISBN,
+                "quantity":1,
+                "price": 10,
+                "author": book_data.items[0].searchInfo.author.join(","),
+                "thumbnailLink":book_data.items[0].searchInfo.imageLinks.thumbnail,
             });
+            console.log(bodyContent);
 
             let response = await fetch("http://localhost:3000/api/admin//add-librarian", {
                 method: "POST",
@@ -36,7 +37,7 @@ export default function AddBook({changeView}) {
             });
 
             let data = await response.json();
-            if (data.status != "success") {
+            if (data.status !== "success") {
                 alert("Something went wrong!");
             }
             changeView();
@@ -45,59 +46,35 @@ export default function AddBook({changeView}) {
         }
 
     }
+
+    const fetchData = async () => {
+        const result = await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:" + ISBN);
+        const data = await result.json();
+        return data;
+    }
+
     return (
         <div id="pop-up-container" onClick={(e) => {
-            if (e.target.id == "pop-up-container") {
+            if (e.target.id === "pop-up-container") {
                 changeView();
             }
         }}>
             <div className="login-container">
                 <div className="container">
                     <div className="signin-form">
-                        <h2>Add Librarian</h2>
+                        <h2>Add Book</h2>
                         <form onSubmit={(e) => {
                             e.preventDefault();
                         }}>
                             <div className="input-group">
-                                <label htmlFor="username">ISBN:</label>
-                                <input type="number" id="isbn" name="ISBN" required/>
+                                <label htmlFor="isbn">ISBN:</label>
+                                <input type="number" value={ISBN} onChange={(e) => {
+                                    setISBN(e.target.value)
+                                }} onBlur={fetchData} id="isbn" name="ISBN" required/>
                             </div>
 
-                            <div className="input-group">
-                                <label htmlFor="username">Title:</label>
-                                <input type="text" id="uemail" name="uemail" required/>
-                            </div>
 
-                            <div className="input-group">
-                                <label htmlFor="address">Description:</label>
-                                <input type="text" id="desc" name="desc" required/>
-                            </div>
-
-                            <div className="input-group">
-                                <label htmlFor="address">Author:</label>
-                                <input type="text" id="author" name="author" required/>
-                            </div>
-
-                            <div className="input-group">
-                                <label htmlFor="address">Publisher:</label>
-                                <input type="text" id="publisher" name="publisher" required/>
-                            </div>
-
-                            <div className="input-group">
-                                <label htmlFor="address">Image:</label>
-                                <input type="file" id="Image" name="Image" required/>
-                            </div>
-
-                            <div className="input-group">
-                                <label htmlFor="password">Year: </label>
-                                <input type="year" id="publish_year" name="publish_year" required/>
-                            </div>
-                            <div className="input-group">
-                                <label htmlFor="password">Available: </label>
-                                <input type="number" id="avl" name="avl" required/>
-                            </div>
-
-                            <button type="button" onClick={addLibrarian}>Add</button>
+                            <button type="button" onClick={addBookDetails}>Add</button>
                         </form>
                     </div>
                 </div>
@@ -105,6 +82,6 @@ export default function AddBook({changeView}) {
         </div>
     );
 }
-AddLibrarian.propTypes = {
+AddBook.propTypes = {
     changeView: PropTypes.func.isRequired,
 }

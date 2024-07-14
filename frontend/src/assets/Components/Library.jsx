@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "../CSS/Librarian.css";
 import "../CSS/User.css";
 import AdminHeader from "./AdminHeader.jsx";
-import AddLibrarian from "./AddLibrarian.jsx";
+import AddBook from "./AddBook.jsx";
+import LibrarianHeader from "./LibrarianHeader.jsx";
 
 export default function Library() {
     const [status, setStatus] = useState(false);
@@ -41,7 +42,7 @@ export default function Library() {
 
     return (
         <>
-            <AdminHeader />
+            <LibrarianHeader />
             <div className="btn-container">
                 <button onClick={changeView}>Add +</button>
             </div>
@@ -80,7 +81,7 @@ export default function Library() {
                 }
             </div>
 
-            {status && <AddLibrarian changeView={changeView} />}
+            {status && <AddBook changeView={changeView} />}
         </>
     );
 }
