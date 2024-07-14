@@ -5,6 +5,7 @@ import dbConnect from '../../models/dbconnect.js';
 import User from '../../models/user/user.model.js';
 import Book from '../../models/book/book.model.js';
 import BorrowingRecord from '../../models/book/borrow.model.js';
+// import saveNotification from '../notification/saveNotification.js';
 
 dotenv.config();
 dbConnect();
@@ -42,7 +43,13 @@ const borrowBook = asyncHandler(async (req, res) => {
     // Update book quantity
     book.quantity -= 1;
     await book.save();
-
+  
+    const notificationData = {
+      user: user.email,
+      message: `You have successfully borrowed the book titled "${book.title}". Please return it by ${borrow.expectedReturnDate.toDateString()}.`
+  };
+  await saveNotification(notificationData);
+  
     res.status(200).json({ status: "success", data: { message: "Book borrowed successfully", borrowRecord }, hasData: true });
 });
 
@@ -250,6 +257,8 @@ const getPopuplarBooks = asyncHandler(async (req, res) => {
 
     return res.status(200).json({ status: "success", data: { message: "Popular books found", popularBooks }, hasData: true });
 });
+
+
 
 
 
