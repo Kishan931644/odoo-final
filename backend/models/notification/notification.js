@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema as _Schema, model } from 'mongoose';
+const Schema = _Schema;
 
 const notificationSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -7,6 +7,6 @@ const notificationSchema = new Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-const Notification = mongoose.model('Notification', notificationSchema);
+const Notification = model('Notification', notificationSchema);
 
-module.exports = Notification;
+export default Notification;

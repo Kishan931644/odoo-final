@@ -1,7 +1,9 @@
-const connectDB = require('../../models/dbconnect');
-const Notification = require('../../models/notification/notification');
-const User = require('../User/user.controller');
-const sendEmail = require('../email/sendEmail');
+import connectDB from '../../models/dbconnect.js';
+import Notification from '../../models/notification/notification';
+
+import User from "../../controller/User/user.controller.js"
+
+import sendEmail from '../email/sendEmail';
 
 const storeData = async (data) => {
     await connectDB();
@@ -41,4 +43,4 @@ const newData = {
 // Uncomment the following line to store the example data
 storeData(newData);
 
-module.exports = storeData;
+export default storeData;
