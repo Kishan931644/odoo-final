@@ -11,17 +11,20 @@ dbConnect();
 // get logged in user details
 const getDetail = asyncHandler(async (req, res) => {
     
+    console.log(req.user);
+
     try {
         let email = req.user.email;
-        const user = await User.findOnce({email},{password: 0});
+        const user = await User.findOne({email},{password: 0});
 
         if(!user){
-            return { status: "error", data: { message: 'User not found' }, hasData: false };
+            return res.status(200).json({ status: "error", data: { message: 'User not found' }, hasData: false });
         }
 
-        return { status: "success", data: { message: "user founded", user }, hasData: true };
+        return res.status(200).json({ status: "success", data: { message: "user founded", user }, hasData: true });
     } catch (err) {
-        return { status: "error", data: { message: 'Internal Server error' }, hasData: false };
+        console.log(err);
+        return res.status(500).json({ status: "error", data: { message: 'Internal Server error' }, hasData: false });
     }
 });
 

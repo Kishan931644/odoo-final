@@ -5,6 +5,6 @@ import { getAllBooks, searchBook } from '../../controller/Book/book.controller.j
 const book = Router();
 
 book.get("/get-all-books", getAllBooks);
-book.get("/search-book?q=", searchBook);
+book.get("/search-book", searchBook);
 
 export default book;

@@ -6,7 +6,7 @@ import { getDetail } from '../../controller/User/user.controller.js';
 const user = Router();
 
 
-user.post("getowndetails", validateUser , getDetail);
+user.post("/getowndetails", validateUser , getDetail);
 
 
 
