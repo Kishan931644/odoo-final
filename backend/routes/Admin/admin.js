@@ -7,4 +7,4 @@ const admin = Router();
 
 admin.post('/add-librarian', validateUser ,addLibrarian);
 
-export default admin;
+export default admin;   

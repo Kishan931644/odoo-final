@@ -5,7 +5,7 @@ dotenv.config();
 
 const validateUser = (req, res, next) => {
     const token = req.header('Authorization');
-    if (!token) return res.status(401).send('Access denied');
+    if (!token) return res.status(401).json({ data:{message: 'Access Denied'}, hasData: false, status: "error" });
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET);

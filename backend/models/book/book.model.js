@@ -27,15 +27,18 @@ const bookSchema = new Schema({
     type: String,
     required: true
   },
+  thumbnailLink: {
+    type: String,
+    required: false
+  },
   quantity: {
     type: Number,
     required: true
   },
   available: {
-    type: Number,
-    required: true,
+    type: Boolean,
     default: function () {
-      return this.quantity;
+      return this.quantity>0, true, false;
     }
   }
 }, { timestamps: true });

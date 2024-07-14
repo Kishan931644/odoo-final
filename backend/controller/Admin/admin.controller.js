@@ -1,12 +1,6 @@
 import asyncHandler from 'express-async-handler';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-
-import generateUUID from '../../utils/generateUUID.js';
-
 import dbConnect from '../../models/dbconnect.js';
-import User from "../../models/user/user.model.js";
 
 import { createUser } from '../Auth/auth.controller.js';
 

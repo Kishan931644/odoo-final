@@ -1,25 +1,20 @@
 import { Router } from 'express';
+import validateUser from '../../middleware/validateUser.js';
 const librarian = Router();
 
-librarian.get('/profile', (req, res) => {
-    res.send('Librarian Profile');
-});
 
-librarian.post('/addBook', (req, res) => {
-    res.send('Add Book');
-});
+import {
+    add_Book,
+    update_Book,
+    delete_Book,
+    getLibrarians
+} from '../../controller/Librarian/librarian.controller.js';
 
-librarian.post("deleteBook/:isbn", (req, res) => {
-    res.send("Delete Book");
-});
 
-librarian.post('/updateBook/:isbn', (req, res) => {
-    res.send('Update Book');
-});
-
-librarian.get("acceptReturnRequest/:isbn", (req, res) => {
-    res.send("Accept Return Request");
-});
+librarian.post('/add-book', validateUser ,add_Book);
+librarian.post('/update-book', validateUser ,update_Book);
+librarian.post('/delete-book/:isbn', validateUser ,delete_Book);
+librarian.get('/get-librarians', validateUser ,getLibrarians);
 
 
 export default librarian;
