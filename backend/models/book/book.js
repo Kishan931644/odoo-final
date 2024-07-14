@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import { Schema as _Schema, model } from 'mongoose';
 
 const bookSchema = new mongoose.Schema({
   ISBN: {

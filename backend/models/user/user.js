@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import { Schema as _Schema, model } from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   profileImage: {
