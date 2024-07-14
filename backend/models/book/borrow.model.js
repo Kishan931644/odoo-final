@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema as _Schema, model } from 'mongoose';
 
-const borrowingRecordSchema = new mongoose.Schema({
+const Schema = _Schema;
+
+const borrowingRecordSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -30,6 +31,6 @@ const borrowingRecordSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-const BorrowingRecord = mongoose.model('BorrowingRecord', borrowingRecordSchema);
+const BorrowingRecord = model('BorrowingRecord', borrowingRecordSchema);
 
-module.exports = BorrowingRecord;
+export default BorrowingRecord;

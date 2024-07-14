@@ -1,9 +1,15 @@
 import { Schema as _Schema, model } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const Schema = _Schema;
+
+const userSchema = new Schema({
   profileImage: {
     type: String,
     required: false // URL or path to the profile image
+  },
+  password: {
+    type: String,
+    required: true
   },
   name: {
     type: String,
@@ -44,6 +50,6 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
-module.exports = User;
+export default User;
