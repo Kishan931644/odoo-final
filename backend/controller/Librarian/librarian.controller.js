@@ -20,15 +20,13 @@ const add_Book = asyncHandler(async (req, res) => {
         return res.status(401).json({ status: "error", data: { message: 'Access denied! you are not allowed to add book' }, hasData: false });
     }
     const book = req.body;
-
+    console.log(book);
     let result = await createBook(book);
 
     if (result.status === "error") {
         return res.status(400).json(result);
     }
-
-    return res.status(201).json({ status: "success", data: { message: 'Book added successfully', }, hasData: true });
-
+    return res.status(200).json(result);
 });
 
 // update book details without ISBN

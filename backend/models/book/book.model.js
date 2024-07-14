@@ -23,6 +23,10 @@ const bookSchema = new Schema({
     type: Number,
     required: true
   },
+  desc: {
+    type: String,
+    required: true
+  },
   genre: {
     type: String,
     required: true
@@ -35,10 +39,14 @@ const bookSchema = new Schema({
     type: Number,
     required: true
   },
+  borrowedCount: {
+    type: Number,
+    default: 0
+  },
   available: {
     type: Boolean,
     default: function () {
-      return this.quantity>0, true, false;
+      return this.quantity>0? true: false;
     }
   }
 }, { timestamps: true });

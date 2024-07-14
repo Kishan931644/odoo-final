@@ -3,6 +3,11 @@ import { Schema as _Schema, model } from 'mongoose';
 const Schema = _Schema;
 
 const userSchema = new Schema({
+  userid: {
+    type: String,
+    required: true,
+    unique: true
+  },
   profileImage: {
     type: String,
     required: false // URL or path to the profile image

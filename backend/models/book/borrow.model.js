@@ -23,7 +23,8 @@ const borrowingRecordSchema = new Schema({
     required: true
   },
   returnDate: {
-    type: Date
+    type: Date,
+    default: null
   },
   lateFees: {
     type: Number,
