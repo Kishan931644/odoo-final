@@ -1,20 +1,10 @@
 import { Router } from 'express';
+
+import { getAllBooks, searchBook } from '../../controller/Book/book.controller.js';
+
 const book = Router();
 
-book.get('/getBooks', (req, res) => {
-    res.send('Books');
-});
-
-book.get('/getBook/:id', (req, res) => {
-    res.send('Book');
-});
-
-book.post("availability/:isbn", (req, res) => {
-    res.send("Availability");
-});
-
-book.post('/deleteBook/:isbn', (req, res) => {
-    res.send('Delete Book');
-});
+book.get("/get-all-books", getAllBooks);
+book.get("/search-book?q=", searchBook);
 
 export default book;

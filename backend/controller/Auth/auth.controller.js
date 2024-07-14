@@ -64,7 +64,7 @@ const login = asyncHandler(async (req, res) => {
         console.log(user);
 
         const token = generateJWTToken(user);
-        return res.json({ status: "success", data: { message: 'Login successful', isAdmin: isAdmin, token: token }, hasData: true });
+        return res.json({ status: "success", data: { message: 'Login successful', role: user.role,  isAdmin: isAdmin, token: token }, hasData: true });
 
     } catch (error) {
         console.error('Login error:', error);
