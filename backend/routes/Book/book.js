@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import validateUser from '../../middleware/validateUser.js';
-import { getAllBooks, searchBook,getBookByISBN, getUserHistoryRecommendations, getPopuplarBooks } from '../../controller/Book/book.controller.js';
-
-import { getAllBooks, searchBook , borrowBook , returnBook} from '../../controller/Book/book.controller.js';
+import { getAllBooks, searchBook, getBookByISBN, getUserHistoryRecommendations, getPopuplarBooks, borrowBook, returnBook } from '../../controller/Book/book.controller.js';
 
 const book = Router();
 

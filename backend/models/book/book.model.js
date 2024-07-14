@@ -23,6 +23,10 @@ const bookSchema = new Schema({
     type: Number,
     required: true
   },
+  desc: {
+    type: String,
+    required: true
+  },
   genre: {
     type: String,
     required: true
