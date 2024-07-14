@@ -33,7 +33,13 @@ export default function Login() {
             if (data.status == "success") {
                 localStorage.setItem("token", data.data.token);
                 localStorage.setItem("role", data.data.role);
-                navigate("/admin/dashboard");
+                if (data.data.role === "admin") {
+                    navigate("/admin/dashboard");
+                }else if(data.data.role === "user") {
+                    navigate("/");
+                }else if(data.data.role === "librarian") {
+                    navigate("/library");
+                }
             } else {
                 console.log(data)
                 setError(data.data.message);

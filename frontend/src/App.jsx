@@ -8,7 +8,8 @@ import User from "./assets/Components/User.jsx";
 import Dashboard from "./assets/Components/Dashboard.jsx";
 import Librarian from "./assets/Components/Librarian.jsx";
 import {GoogleOAuthProvider} from '@react-oauth/google';
-import LoginWithGoogle from "./assets/Components/LoginWithGoogle.jsx";
+import Logout from "./assets/Components/logout.jsx";
+import Library from "./assets/Components/Library.jsx";
 
 function App() {
     // useEffect(() => {
@@ -21,7 +22,7 @@ function App() {
         <GoogleOAuthProvider clientId="27845722517-td15see51ltocmv30uq0a7gdmq1ujdd3.apps.googleusercontent.com">
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<LoginWithGoogle/>}/>
+                    <Route path="/" element={<Index/>}/>
                     <Route path="/index" element={<Index/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/registration" element={<Registration/>}/>
@@ -29,7 +30,8 @@ function App() {
                     <Route path="/admin/dashboard" element={<Dashboard/>}/>
                     <Route path="/admin/user" element={<User/>}/>
                     <Route path="/admin/librarian" element={<Librarian/>}/>
-                    <Route path="/loging" element={<LoginWithGoogle/>}/>
+                    <Route path="/logout" element={<Logout/>}/>
+                    <Route path="/library" element={<Library/>}/>
                 </Routes>
             </BrowserRouter>
         </GoogleOAuthProvider>
