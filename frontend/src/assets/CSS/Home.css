@@ -1,0 +1,100 @@
+.main-container {
+    width: 100%;
+    min-height: 95vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+}
+
+.input-container {
+    display: grid;
+    width: 90vw;
+    grid-template-columns: 5fr 1fr;
+    gap: .5rem;
+}
+
+::placeholder {
+    color: #757575;
+    opacity: 1;
+}
+
+.search-input {
+    background: #EEEEEE;
+    color: #212121;
+    vertical-align: middle;
+    font-size: 16px;
+    line-height: 2;
+    padding: 10px 20px;
+    border: 0;
+    outline: none;
+}
+
+.search-submit {
+    vertical-align: middle;
+    padding: 0 20px;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+}
+
+.search-submit:hover {
+    background: #AB47BC;
+}
+
+.search-submit i {
+    font-size: 24px;
+}
+
+.main-books-container {
+    width: 100%;
+    padding: 1rem 3rem  ;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+}
+
+.book-card {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 3fr;
+    width: 100%;
+}
+
+.book-card .book-img-container {
+    width: 10rem;
+    height: 15rem;
+}
+
+.book-card .book-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.book-card .content {
+    width: 100%;
+    display: flex;
+    gap: .5rem;
+    flex-direction: column;
+}
+
+.book-card .book-name {
+    font-weight: bold;
+    color: darkblue;
+}
+
+.book-card .details {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.book-card .description {
+    display: -webkit-box;
+    width: 100%;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

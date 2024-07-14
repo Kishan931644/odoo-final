@@ -1,0 +1,17 @@
+#pop-up-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;align-items: center;
+    background: rgba(154, 151, 151, 0.28);
+}
+
+#pop-up-container .login-container {
+    height: max-content;
+    width: max-content;
+    background: rgba(154, 151, 151, 0.28);
+}

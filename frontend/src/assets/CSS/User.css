@@ -1,0 +1,17 @@
+.user-container{
+    width: 100%;
+    padding:1rem 2rem;
+    background-color: #fff;
+}
+.user-container button{
+    width: 1em;
+}
+.btn-container{
+    width: 100%;
+    float: right;
+}
+.btn-container button{
+    width: 10rem;
+    float: right;margin: .5rem 2rem;
+
+}
