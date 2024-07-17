@@ -4,9 +4,9 @@ import "../CSS/Home.css";
 import { useEffect, useState } from "react";
 
 export default function Index() {
-    const [book, setBook] = useState([]);
-    const [popularBooks, setPopularBooks] = useState([]);
-    const [recommendedBooks, setRecommendedBooks] = useState([]);
+    const [book, setBook] = useState(null);
+    const [popularBooks, setPopularBooks] = useState(null);
+    const [recommendedBooks, setRecommendedBooks] = useState(null);
 
     const [user, setProfile] = useState(null);
 
@@ -41,15 +41,16 @@ export default function Index() {
                 "User-Agent": "Thunder Client (https://www.thunderclient.com)"
             }
 
-            let response = await fetch("http://localhost:3000/api/book//get-all-books", {
+            let response = await fetch("http://localhost:3000/api/book/get-all-books", {
                 method: "GET",
                 headers: headersList
             });
 
             let data = await response.json();
+            console.log(data.data.books);
             if (data.status == "success") {
                 let listOfBooks = data.data.books;
-                setPopularBooks(listOfBooks);
+                setBook(listOfBooks);
             }
         }
 
@@ -65,11 +66,11 @@ export default function Index() {
                 method: "GET",
                 headers: headersList
             });
-
             let data = await response.json();
+
+            let listOfBooks = data.data.books;
+            setRecommendedBooks(listOfBooks);
             if (data.status == "success") {
-                let listOfBooks = data.data.books;
-                setRecommendedBooks(listOfBooks);
             }
         }
 
@@ -123,19 +124,23 @@ export default function Index() {
                         <h2>New Available</h2>
                         <div className="books-container">
 
-                            {book && <div className="book-card">
-                                <div className="book-img-container">
-                                    <img src="/Img/sample%20book.jpg" alt="" />
-                                </div>
-                                <div className="content">
-                                    <Link to={"/"} className="book-name">{book.title}</Link>
-                                    <div className="details">
-                                        <div className="author">{book.author}</div>
-                                        <div className="realese-year"> {book.year}</div>
-                                    </div>
-                                    <div className="description"></div>
-                                </div>
-                            </div>}
+                            {book &&
+                                book?.map((book) => 
+
+                                    (<div className="book-card">
+                                        <div className="book-img-container">
+                                            <img src={book.thubnnailLink && "/Img/sample%20book.jpg"} alt="" />
+                                        </div>
+                                        <div className="content">
+                                            <Link to={"/"} className="book-name">{book.title}</Link>
+                                            <div className="details">
+                                                <div className="author">{book.author}</div>
+                                                <div className="realese-year"> {book.year}</div>
+                                            </div>
+                                            <div className="description">{book.desc}</div>
+                                        </div>
+                                    </div>)
+                                )}
                         </div>
                     </div>
                     {

@@ -3,6 +3,7 @@ import "../CSS/Librarian.css";
 import "../CSS/User.css";
 import AdminHeader from "./AdminHeader.jsx";
 import AddBook from "./AddBook.jsx";
+import AddLibrarian from "./AddLibrarian.jsx";
 import LibrarianHeader from "./LibrarianHeader.jsx";
 
 export default function Library() {
@@ -55,26 +56,26 @@ export default function Library() {
                     ) : (
                         <table>
                             <thead>
-                            <tr className="table-headers">
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Publisher</th>
-                                <th>Image</th>
-                                <th>Year</th>
-                                <th>Available</th>
-                            </tr>
+                                <tr className="table-headers">
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Publisher</th>
+                                    <th>Image</th>
+                                    <th>Year</th>
+                                    <th>Available</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            {books.map((book) => (
-                                <tr key={book.title}>
-                                    <td>{book.title}</td>
-                                    <td>{book.author}</td>
-                                    <td>{book.publisher}</td>
-                                    <td>{book.image}</td>
-                                    <td>{book.year}</td>
-                                    <td>{book.available}</td>
-                                </tr>
-                            ))}
+                                {books.map((book) => (
+                                    <tr key={book.title}>
+                                        <td>{book.title}</td>
+                                        <td>{book.author}</td>
+                                        <td>{book.publisher}</td>
+                                        <td>{book.image}</td>
+                                        <td>{book.year}</td>
+                                        <td>{book.available}</td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     )

@@ -8,7 +8,7 @@ export default function LibrarianHeader() {
             </div>
             <div className="right-side">
                 <button> <Link to={"/librarian/dashboard"} >Dashboard</Link></button>
-                <button><Link to={"/librarian/book"} >Books</Link></button>
+                <button><Link to={"/library"} >Books</Link></button>
                 <button><Link to={"/logout"} >Logout</Link></button>
             </div>
         </header>

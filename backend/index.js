@@ -26,10 +26,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/api/auth', Auth);
-app.use('/api/book', validateUser, book);
-app.use('/api/user', validateUser, user);
-app.use('/api/admin', validateUser, admin);
-app.use('/api/librarian', validateUser, librarian);
+app.use('/api/book', book);
+app.use('/api/user', user);
+app.use('/api/admin', admin);
+app.use('/api/librarian', librarian);
 
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT}`);

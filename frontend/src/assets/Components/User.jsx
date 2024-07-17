@@ -1,45 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "../CSS/Librarian.css";
 import "../CSS/User.css";
 import AdminHeader from "./AdminHeader.jsx";
-import AddBook from "./AddBook.jsx";
-import LibrarianHeader from "./LibrarianHeader.jsx";
+import AddLibrarian from "./AddLibrarian.jsx";
 
-export default function Library() {
+export default function Librarian() {
     const [status, setStatus] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [users, setUser] = useState([]);
+    const [users, setUsers] = useState([]);
+
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchLibrarians = async () => {
             try {
-                const headersList = {
-                    Authorization: localStorage.getItem("token"),
-                };
-                const response = await fetch("http://localhost:3000/api/book/get-all-users", {
+                let headersList = {
+                    "Accept": "*/*",
+                    "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+                    "Authorization": localStorage.getItem("token")
+                }
+
+                let response = await fetch("http://localhost:3000/api/librarian/get-librarians", {
                     method: "GET",
                     headers: headersList
                 });
 
                 const data = await response.json();
-                console.log(data);
                 if (data.status === "success") {
-                    console.log(data);
-                    setUser(data.data.users);
+                    setUsers(data.data);
                 }
             } catch (error) {
-                console.error("Error fetching books:", error);
+                console.error("Error fetching librarians:", error);
             } finally {
                 setLoading(false);
             }
-        };
-
-        fetchUser();
+        }
+        fetchLibrarians();
     }, []);
 
     const changeView = () => {
         setStatus(!status);
-    };
+    }
 
     return (
         <>
@@ -51,36 +51,36 @@ export default function Library() {
             <div className="user-container">
                 <p>Click the names to see more data.</p>
                 {
-                    loading ? (
-                        <p>Loading...</p>
-                    ) : (
-                        <table>
-                            <thead>
+                    !loading &&
+                    <table>
+                        <thead>
                             <tr className="table-headers">
                                 <th>Name</th>
+                                <th>Number</th>
                                 <th>Email</th>
-                                <th>Phone</th>
                                 <th>Address</th>
-                                <th>Books</th>
+                                <th>City</th>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {users.map((user) => (
-                                <tr key={user.name}>
-                                    <td>{user.name}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.phone}</td>
-                                    <td>{user.address} , {user.city}, {user.country}</td>
-                                    <td>{user.borrowedBooks}</td>
+                        </thead>
+                        <tbody>
+                            {users.map((librarian) => (
+                                <tr key={librarian.id}>
+                                    <td>{librarian.name}</td>
+                                    <td>{librarian.phone}</td>
+                                    <td>{librarian.email}</td>
+                                    <td>{librarian.address}</td>
+                                    <td>{librarian.city}</td>
                                 </tr>
                             ))}
-                            </tbody>
-                        </table>
-                    )
+                        </tbody>
+                    </table>
                 }
+                {loading && <p>Loading...</p>}
             </div>
 
-            {status && <AddBook changeView={changeView} />}
+            {
+                status && <AddLibrarian changeView={changeView} />
+            }
         </>
     );
 }
