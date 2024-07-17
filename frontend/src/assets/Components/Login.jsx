@@ -10,6 +10,39 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+
+    const signupWithGoogle = async () => {
+        try {
+            const response = await fetch("http://localhost:3000/api/auth/google", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "*/*",
+                    "Authorization": localStorage.getItem("token")
+                }
+            });
+
+            const data = await response.json();
+            data && console.log(data);
+            if (data.status === "success") {
+                localStorage.setItem("token", data.data.token);
+                localStorage.setItem("role", data.data.role);
+                if (data.data.role === "admin") {
+                    navigate("/admin/dashboard");
+                }else if(data.data.role === "user") {
+                    navigate("/");
+                }else if(data.data.role === "librarian") {
+                    navigate("/library");
+                }
+            } else {
+                setError(data.data.message);
+            }
+        } catch (e) {
+            console.error("Error signing up with Google:", e);
+            setError(e);
+        }
+    }
+    
     const LoginUser = async () => {
         try {
             let headersList = {
@@ -79,7 +112,7 @@ export default function Login() {
                             <button type="button" onClick={LoginUser}>Login</button>
                         </form>
                         <div className="links-container">
-                            <Link to={"/Login"}>Sign up with Google</Link>
+                            <button onClick={signupWithGoogle}>Sign up with Google</button>
                             <Link to="/Registration">Sign up with Email</Link>
                         </div>
                     </div>

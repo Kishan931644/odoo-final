@@ -14,7 +14,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: false
   },
   name: {
     type: String,
@@ -22,15 +22,15 @@ const userSchema = new Schema({
   },
   address: {
     type: String,
-    required: true
+    required: false   
   },
   city: {
     type: String,
-    required: true
+    required: false
   },
   country: {
     type: String,
-    required: true
+    required: false
   },
   email: {
     type: String,
@@ -39,7 +39,7 @@ const userSchema = new Schema({
   },
   phone: {
     type: String,
-    required: true,
+    required: false,
     validate: {
       validator: function (v) {
         return /\d{10}/.test(v); // Validates 10-digit phone numbers
@@ -52,7 +52,8 @@ const userSchema = new Schema({
     enum: ['user', 'librarian', 'admin'],
     default: 'user',
     required: true
-  }
+  },
+  googleId: { type: String }, // Google ID for OAuth
 }, { timestamps: true });
 
 const User = model('User', userSchema);
