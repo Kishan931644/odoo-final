@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
+import axios from 'axios';
+
 import generateUUID from '../../utils/generateUUID.js';
 
 import dbConnect from '../../models/dbconnect.js';
@@ -72,6 +74,75 @@ const login = asyncHandler(async (req, res) => {
     }
 });
 
+const googleLogin = asyncHandler(async (req, res) => {
+    // Google login logic here
+    const CLIENT_ID = '192317428704-qfv78iln1fcb0q52vmanuuktaf4l8d39.apps.googleusercontent.com';
+    const CLIENT_SECRET = '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';
+    const REDIRECT_URI = 'http://localhost:3000/api/auth/googleLogin';
+
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=profile email`;
+    res.redirect(url);
+});
+
+const googleLoginCallback = asyncHandler(async (req, res) => {
+    const CLIENT_ID = '192317428704-qfv78iln1fcb0q52vmanuuktaf4l8d39.apps.googleusercontent.com';
+    const CLIENT_SECRET = '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';
+    const REDIRECT_URI = 'http://localhost:3000/api/auth/googleLogin';
+    const { code } = req.query;
+
+    try {
+        const { data } = await axios({
+            url: `https://oauth2.googleapis.com/token`,
+            method: 'post',
+            data: {
+                client_id: CLIENT_ID,
+                client_secret: CLIENT_SECRET,
+                redirect_uri: REDIRECT_URI,
+                grant_type: 'authorization_code',
+                code,
+            },
+        });
+
+        const { access_token, id_token } = data;
+
+        // Use access_token or id_token to fetch user profile
+        const { data: profile } = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+            headers: { Authorization: `Bearer ${access_token}` },
+        });
+
+        console.log(profile);
+
+        // Check if user already exists in database by email
+        let user = await User.findOne({ email: profile.email });
+
+        if (!user) {
+            // User does not exist, create a new user record
+            user = await createUser({ name: profile.name, email: profile.email, profileImage: profile.picture, googleId: profile.id });
+        }
+
+        if(user.googleId != null){
+            const token = generateJWTToken(user);
+            // Generate JWT token for user authentication
+            return res.json({ status: "success", data: { message: 'Google login successfull', role: user.role, token: token }, hasData: true });
+        }else{
+            
+            login(req, res);
+            
+        }
+        console.log(user);
+    } catch (error) {
+        console.error('Error:', error); // Log the error message for debugging
+        res.redirect('/login'); // Redirect to login page on error
+    }
+});
+;
+
+const googleData = asyncHandler(async (req, res) => {
+    const { profile } = req.body;
+    console.log(profile);
+    return res.json({ status: "success", data: { message: 'Google login successfull', profile: profile }, hasData: true });
+});
+
 // Logout user
 const logout = asyncHandler(async (req, res) => {
     // Invalidate token logic here (if using token blacklist)
@@ -124,7 +195,7 @@ const invalidateToken = (token) => {
 
 };
 
-const createUser = async ({ name, address, city, country, phone, role, password, email }) => {
+const createUser = async ({ name, address, city, country, phone, role, password, profileImage, googleId, email }) => {
     let userid = generateUUID();
     let isUnique = false;
 
@@ -143,7 +214,10 @@ const createUser = async ({ name, address, city, country, phone, role, password,
     if (emailExists) {
         return { status: "error", data: { message: 'Email already exists' }, hasData: false };
     }
-
+    if(googleId){
+        const user = new User({ userid, name, email, profileImage, role, googleId });
+        return user.save();
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({ userid, name, email, address, city, phone, country, password: hashedPassword, role, email });
@@ -155,8 +229,11 @@ export {
     register,
     login,
     logout,
+    googleLoginCallback,
+    googleLogin,
     tokenValidate,
     changePassword,
     deleteAccount,
+    googleData,
     createUser
 };
