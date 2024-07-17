@@ -10,6 +10,7 @@ import Librarian from "./assets/Components/Librarian.jsx";
 import {GoogleOAuthProvider} from '@react-oauth/google';
 import Logout from "./assets/Components/logout.jsx";
 import Library from "./assets/Components/Library.jsx";
+import Notification from "./assets/Components/Notification.jsx";
 
 function App() {
     // useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/admin/librarian" element={<Librarian/>}/>
                     <Route path="/logout" element={<Logout/>}/>
                     <Route path="/library" element={<Library/>}/>
+                    <Route path="/notification" element={<Notification/>}/>
                 </Routes>
             </BrowserRouter>
         </GoogleOAuthProvider>

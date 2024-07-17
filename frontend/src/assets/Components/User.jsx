@@ -71,6 +71,7 @@ export default function Library() {
                                     <td>{user.email}</td>
                                     <td>{user.phone}</td>
                                     <td>{user.address} , {user.city}, {user.country}</td>
+                                    <td>{user.borrowedBooks}</td>
                                 </tr>
                             ))}
                             </tbody>
