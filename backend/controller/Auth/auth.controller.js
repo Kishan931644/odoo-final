@@ -76,8 +76,8 @@ const login = asyncHandler(async (req, res) => {
 
 const googleLogin = asyncHandler(async (req, res) => {
     // Google login logic here
-    const CLIENT_ID = '192317428704-qfv78iln1fcb0q52vmanuuktaf4l8d39.apps.googleusercontent.com';
-    const CLIENT_SECRET = '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';
+    const CLIENT_ID = '';
+    const CLIENT_SECRET = '';
     const REDIRECT_URI = 'http://localhost:3000/api/auth/googleLogin';
 
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=profile email`;
@@ -85,8 +85,8 @@ const googleLogin = asyncHandler(async (req, res) => {
 });
 
 const googleLoginCallback = asyncHandler(async (req, res) => {
-    const CLIENT_ID = '192317428704-qfv78iln1fcb0q52vmanuuktaf4l8d39.apps.googleusercontent.com';
-    const CLIENT_SECRET = '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';
+    const CLIENT_ID = '';
+    const CLIENT_SECRET = '';
     const REDIRECT_URI = 'http://localhost:3000/api/auth/googleLogin';
     const { code } = req.query;
 
